@@ -1,0 +1,47 @@
+.wf-container {
+    border: 1px solid var(--field_border);
+    width: calc(100% - 26px);
+    margin-left: 12px;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-top: 24px;
+    background: var(--field_background);
+}
+
+.btns-container {
+    border: 1px solid var(--field_border);
+    border-top: none;
+    width: calc(100% - 42px);
+    margin-left: 12px;
+    border-radius: 0 0 10px 10px;
+    height: 44px;
+    padding: 8px;
+}
+
+.wavesurfer-region {
+    background-color: transparent!important;
+    border-top: 1px solid var(--accent)!important;
+    border-bottom: 1px solid var(--accent)!important;
+    height: calc(100% - 2px)!important;
+}
+
+.wavesurfer-handle {
+    width: 2px!important;
+    min-width: 2px!important;
+    max-width: 2px!important;
+    background-color: white!important;
+    border-top: 30px solid var(--accent)!important;
+    border-bottom: 30px solid var(--accent)!important;
+    height: calc(100% - 60px)!important;
+    border-left: 2px solid var(--accent)!important;
+    border-right: 2px solid var(--accent)!important;
+}
+
+.square-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
