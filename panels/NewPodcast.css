@@ -1,0 +1,60 @@
+.formLayoutName .FormLayout__row {
+    padding: 0;
+}
+
+.formLayoutName .FormField {
+    margin-right: 0 !important;
+}
+
+.select-file {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    border-radius: 10px;
+    background-color:aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-image {
+    width: 20%;
+    height: 40px;
+    border-radius: 1px;
+    background-position: left;
+    background-size: cover;
+    position: relative;
+}
+
+.remove-btn {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #99A2AD;
+    color: white;
+    text-align: center;
+    top: 8px;
+    right: 8px;
+}
+
+.sf-text {
+    display: flex;
+    color: var(--accent);
+    align-items: center;
+    justify-content: center;
+}
+
+.amount-input {
+    position: relative;
+}
+
+.amount-input:after {
+    position: absolute;
+    content: "₽";
+    top: 22px;
+    transform: translateY(-50%);
+    z-index: 1;
+    right: 12px;
+    font-size: 16px;
+}

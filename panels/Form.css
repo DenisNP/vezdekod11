@@ -1,0 +1,56 @@
+.select-file {
+    width: 100%;
+    height: 140px;
+    border-radius: 10px;
+    border: 1px dashed var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bg-image {
+    width: 100%;
+    height: 140px;
+    border-radius: 10px;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.remove-btn {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #99A2AD;
+    border: 2px solid white;
+    color: white;
+    text-align: center;
+    top: 8px;
+    right: 8px;
+}
+
+.sf-text {
+    display: flex;
+    color: var(--accent);
+    align-items: center;
+}
+
+.sf-text > span {
+    font-weight: 500;
+    margin-left: 6px;
+}
+
+.amount-input {
+    position: relative;
+}
+
+.amount-input:after {
+    position: absolute;
+    content: "₽";
+    top: 22px;
+    transform: translateY(-50%);
+    z-index: 1;
+    right: 12px;
+    font-size: 16px;
+}
