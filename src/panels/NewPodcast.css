@@ -11,6 +11,16 @@
     padding-bottom: 26px!important;
 }
 
+.podcast-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    border-radius: 10px;
+    background-color: var(--field_background);
+    justify-content: center;
+    align-items: center;
+}
+
 .select-file {
     width: 72px;
     height: 72px;

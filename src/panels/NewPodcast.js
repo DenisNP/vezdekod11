@@ -17,13 +17,14 @@ import {
     Checkbox,
     FormLayoutGroup,
     Select,
+    SimpleCell, Caption,
 } from "@vkontakte/vkui";
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import Icon28PictureOutline from '@vkontakte/icons/dist/28/picture_outline';
 import {getState, setState, targets} from "../state";
 import "./NewPodcast.css";
-import Icon56AddCircleOutline from "@vkontakte/icons/dist/56/add_circle_outline";
+import {Icon28PodcastOutline} from "@vkontakte/icons";
 
 const osName = platform();
 
@@ -36,6 +37,7 @@ const NewPodcast = ({id, go}) => {
     const [isExcludedFromExport, setIsExcludedFromExport] = useState(false);
     const [isTrailer, setIsTrailer] = useState(false);
     const [availableTo, setAvailableTo] = useState(0);
+    const [fileName, setFileName] = useState("");
 
     useEffect(() => {
         const state = getState();
@@ -71,6 +73,7 @@ const NewPodcast = ({id, go}) => {
         const reader = new FileReader();
         reader.onload = (fr) => {
             const dataUri = fr.target.result.toString();
+            setFileName(file.name);
             setPodcastFile(dataUri);
         };
 
@@ -81,24 +84,29 @@ const NewPodcast = ({id, go}) => {
         setImage("");
     };
 
-    const clearFile = () => {
-        setImage("");
+    const openEdit = () => {
+        saveState();
+        go("edit");
     };
 
     const goNext = () => {
         if (image && name && desc && podcastFile) {
-            setState({
-               image,
-               name,
-               desc,
-               podcastFile,
-               isExplicit,
-               isExcludedFromExport,
-               isTrailer,
-               availableTo,
-            });
+            saveState();
             go("show");
         }
+    };
+
+    const saveState = () => {
+        setState({
+            image,
+            name,
+            desc,
+            podcastFile,
+            isExplicit,
+            isExcludedFromExport,
+            isTrailer,
+            availableTo,
+        });
     };
 
     return (
@@ -141,6 +149,7 @@ const NewPodcast = ({id, go}) => {
                     onChange={(e) => setDesc(e.currentTarget.value)}
                 />
             </FormLayout>
+            {!podcastFile ?
             <Placeholder className="load-block" action={
                 <label>
                     <Button Component="div" mode="outline" onClick={goNext}>Загрузить файл</Button>
@@ -152,6 +161,20 @@ const NewPodcast = ({id, go}) => {
                 </Title>
                 Выберите готовый аудиофайл из вашего телефона и добавьте его
             </Placeholder>
+            : <SimpleCell before={<div className="podcast-icon"><Icon28PodcastOutline style={{opacity: 0.4}}/></div>}>
+                    <span style={{marginLeft: 12}}>{fileName}</span>
+            </SimpleCell>}
+            {podcastFile && <Div>
+                <Caption level="2" weight="regular" style={{color: 'var(--text_placeholder)'}}>
+                    Вы можете добавить таймкоды и скорректировать подкаст в режиме редактирования
+                </Caption>
+                <Button
+                    size="xl"
+                    mode="outline"
+                    onClick={openEdit}
+                    style={{marginTop: 16}}
+                >Редактировать аудиозапись</Button>
+            </Div>}
             <Separator/>
             <FormLayout>
                 <FormLayoutGroup>

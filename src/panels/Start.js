@@ -1,12 +1,8 @@
 import React from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
-import {Button, Panel, PanelHeader, Placeholder, Title, PanelHeaderButton, IOS, platform} from "@vkontakte/vkui";
+import {Button, Panel, PanelHeader, Placeholder, Title} from "@vkontakte/vkui";
 import Icon56AddCircleOutline from '@vkontakte/icons/dist/56/add_circle_outline';
 import {getState} from "../state";
-import Icon28ChevronBack from "@vkontakte/icons/dist/28/chevron_back";
-import Icon24Back from "@vkontakte/icons/dist/24/back";
-
-const osName = platform();
 
 const Start = ({id, go}) => {
 
