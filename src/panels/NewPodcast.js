@@ -32,7 +32,7 @@ const NewPodcast = ({id, go}) => {
     const [image, setImage] = useState("");
     const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
-    const [podcastFile, setPodcastFile] = useState("");
+    const [podcastFile, setPodcastFile] = useState(null);
     const [isExplicit, setIsExplicit] = useState(false);
     const [isExcludedFromExport, setIsExcludedFromExport] = useState(false);
     const [isTrailer, setIsTrailer] = useState(false);
@@ -71,10 +71,9 @@ const NewPodcast = ({id, go}) => {
         const file = files[0];
 
         const reader = new FileReader();
-        reader.onload = (fr) => {
-            const dataUri = fr.target.result.toString();
+        reader.onload = () => {
             setFileName(file.name);
-            setPodcastFile(dataUri);
+            setPodcastFile(file);
         };
 
         reader.readAsDataURL(file);

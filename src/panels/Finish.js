@@ -1,6 +1,6 @@
 import React from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
-import {Button, Panel, PanelHeader, Placeholder, Title, Div} from "@vkontakte/vkui";
+import {Button, Panel, PanelHeader, Placeholder, Title} from "@vkontakte/vkui";
 import Icon56CheckCircleOutline from '@vkontakte/icons/dist/56/check_circle_outline';
 import {getState} from "../state";
 
