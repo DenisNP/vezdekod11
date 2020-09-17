@@ -17,12 +17,8 @@ const Start = ({id, go}) => {
 
     return (
         <Panel id={id}>
-            <PanelHeader left={<PanelHeaderButton onClick={() => window.history.back()}>
-                {osName === IOS ? <Icon28ChevronBack/> : <Icon24Back/>}
-            </PanelHeaderButton>}>
-                Подкаст
-            </PanelHeader>
-            <Placeholder stretched action={<Button onClick={goNext}>Подкасты</Button>}>
+            <PanelHeader>Подкаст</PanelHeader>
+            <Placeholder stretched action={<Button onClick={goNext}>Добавить подкаст</Button>}>
                 <div style={{display: 'flex', justifyContent: 'center', marginBottom: 10}}>
                     <Icon56AddCircleOutline/>
                 </div>

@@ -11,7 +11,7 @@ export const getState = (forceClear) => {
             isExplicit: false,
             isExcludedFromExport: false,
             isTrailer: false,
-            availableTo: '',
+            availableTo: 0,
         };
 
         state = newState;
@@ -27,3 +27,9 @@ export const setState = (obj) => {
     state = newState;
     return newState;
 };
+
+export const targets = [
+    "Всем пользователям",
+    "Друзьям и подписчикам",
+    "Только друзьям"
+];

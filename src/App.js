@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import {View} from "@vkontakte/vkui";
 import bridge from '@vkontakte/vk-bridge';
-import View from '@vkontakte/vkui/dist/components/View/View';
-import ScreenSpinner from '@vkontakte/vkui/dist/components/ScreenSpinner/ScreenSpinner';
 import '@vkontakte/vkui/dist/vkui.css';
-
-import Home from './panels/Home';
-import Persik from './panels/Persik';
+import Start from "./panels/Start";
+import NewPodcast from "./panels/NewPodcast";
+import Finish from "./panels/Finish";
+import "./App.css";
 
 const App = () => {
-	const [activePanel, setActivePanel] = useState('home');
-	const [fetchedUser, setUser] = useState(null);
-	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
+	const [activePanel, setActivePanel] = useState("start");
+
+	const changePanel = (p) => {
+		setActivePanel(p);
+		window.history.pushState({panel: p}, "");
+	};
 
 	useEffect(() => {
+		window.history.pushState({panel: "start"}, "");
+		window.onpopstate = function(e) {
+			setActivePanel((e.state && e.state.panel) || "start")
+		};
+
 		bridge.subscribe(({ detail: { type, data }}) => {
 			if (type === 'VKWebAppUpdateConfig') {
 				const schemeAttribute = document.createAttribute('scheme');
@@ -20,22 +28,13 @@ const App = () => {
 				document.body.attributes.setNamedItem(schemeAttribute);
 			}
 		});
-		async function fetchData() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
-			setPopout(null);
-		}
-		fetchData();
 	}, []);
 
-	const go = e => {
-		setActivePanel(e.currentTarget.dataset.to);
-	};
-
 	return (
-		<View activePanel={activePanel} popout={popout}>
-			<Home id='home' fetchedUser={fetchedUser} go={go} />
-			<Persik id='persik' go={go} />
+		<View activePanel={activePanel}>
+			<Start id="start" go={changePanel}/>
+			<NewPodcast id="newPodcast" go={changePanel}/>
+			<Finish id="finish" go={changePanel}/>
 		</View>
 	);
 }

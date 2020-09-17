@@ -6,21 +6,25 @@
     margin-right: 0 !important;
 }
 
+.load-block .Placeholder__in {
+    padding-top: 26px!important;
+    padding-bottom: 26px!important;
+}
+
 .select-file {
     width: 72px;
     height: 72px;
     display: flex;
     border-radius: 10px;
-    background-color:aliceblue;
-    display: flex;
+    background-color: var(--field_background);
     justify-content: center;
     align-items: center;
 }
 
 .bg-image {
-    width: 20%;
-    height: 40px;
-    border-radius: 1px;
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
     background-position: left;
     background-size: cover;
     position: relative;
@@ -28,14 +32,15 @@
 
 .remove-btn {
     position: absolute;
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
     border-radius: 50%;
-    background-color: #99A2AD;
+    background-color: rgba(0,0,0,0.5);
     color: white;
     text-align: center;
-    top: 8px;
-    right: 8px;
+    top: 4px;
+    right: 4px;
 }
 
 .sf-text {
