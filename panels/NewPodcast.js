@@ -8,21 +8,15 @@ import {
     PanelHeader,
     platform,
     IOS,
-    Banner,
     Textarea,
     Button,
-    Placeholder,
-    Title,
     Div
 } from "@vkontakte/vkui";
 import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
 import Icon24Back from '@vkontakte/icons/dist/24/back';
 import Icon28PictureOutline from '@vkontakte/icons/dist/28/picture_outline';
-
-import { authors, getState, receivers, setState } from "../state";
-
+import { getState, setState } from "../state";
 import "./NewPodcast.css";
-
 
 const osName = platform();
 
@@ -34,7 +28,7 @@ const NewPodcast = ({id, go}) => {
     const [isExplicit, setIsExplicit] = useState(false);
     const [isExcludedFromExport, setIsExcludedFromExport] = useState(false);
     const [isTrailer, setIsTrailer] = useState(false);
-    const [availibleTo, setAvailibleTo] = useState("");
+    const [availableTo, setAvailableTo] = useState("");
 
     useEffect(() => {
         const state = getState();
@@ -45,7 +39,7 @@ const NewPodcast = ({id, go}) => {
         setIsExplicit(state.isExplicit);
         setIsExcludedFromExport(state.isExcludedFromExport);
         setIsTrailer(state.isTrailer);
-        setAvailibleTo(state.availibleTo);
+        setAvailableTo(state.availableTo);
     }, []);
 
     const imageFileSelected = (e) => {
@@ -84,11 +78,10 @@ const NewPodcast = ({id, go}) => {
         setImage("");
     };
 
-
     const goNext = () => {
         if (image && name && desc && podcastFile
             && isExplicit && isExcludedFromExport && isTrailer
-            && availibleTo) {
+            && availableTo) {
             setState({
                image,
                name,
@@ -97,14 +90,13 @@ const NewPodcast = ({id, go}) => {
                isExplicit,
                isExcludedFromExport,
                isTrailer,
-               availibleTo,
+               availableTo,
             });
-            go("start");
+            go("show");
         }
     };
 
     return (
-        
         <Panel id={id} >
              <PanelHeader
                 left={<PanelHeaderButton onClick={() => window.history.back()}>
@@ -129,19 +121,17 @@ const NewPodcast = ({id, go}) => {
                 }
                 <div style={{ width: 'calc(100% - 72px)'}}>
                     <FormLayout className = 'formLayoutName' >
-                    <Input 
+                    <Input
                         top="Название"
                         placeholder="Введите название подкаста"
                         value={name}
                         onChange={(e) => setName(e.currentTarget.value)}
                     />
                       </FormLayout>
-                    
+
                 </div>
-
             </Div>
-
-            <FormLayout> 
+            <FormLayout>
             <Textarea
                     top="Описание подкаста"
                     placeholder=""
@@ -149,14 +139,7 @@ const NewPodcast = ({id, go}) => {
                     onChange={(e) => setDesc(e.currentTarget.value)}
                     />
             </FormLayout>
-
-
-            
-            <Placeholder stretched action={
-                <Button onClick={goNext}>Далее</Button>
-            }>
-
-            </Placeholder>
+            <Button onClick={goNext}>Далее</Button>
         </Panel>
         );
     }
