@@ -16,6 +16,8 @@
     border-radius: 0 0 10px 10px;
     height: 44px;
     padding: 8px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .wavesurfer-region {
@@ -44,4 +46,39 @@
     align-items: center;
     justify-content: center;
     padding: 0;
+}
+
+.scissors {
+    background-image: url("../scissors.svg");
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+.bc-white-left {
+    background-image: url("../bar-chart-white-left.svg");
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+.bc-white-right {
+    background-image: url("../bar-chart-white-right.svg");
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+.bc-blue-left {
+    background-image: url("../bar-chart-blue-left.svg");
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
+}
+
+.bc-blue-right {
+    background-image: url("../bar-chart-blue-right.svg");
+    width: 24px;
+    height: 24px;
+    margin-left: 4px;
 }

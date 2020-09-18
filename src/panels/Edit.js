@@ -8,7 +8,7 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import "./Edit.css";
-import {Icon24Pause, Icon24Play} from "@vkontakte/icons";
+import {Icon24ArrowUturnLeftOutline, Icon24Pause, Icon24Play} from "@vkontakte/icons";
 
 const osName = platform();
 
@@ -17,6 +17,9 @@ const Edit = ({id}) => {
     const [nd, setNd] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [prevBuffer, setPrevBuffer] = useState(null);
+    const [fadeLeft, setFadeLeft] = useState(false);
+    const [fadeRight, setFadeRight] = useState(false);
+    const [cTime, setCTime] = useState(0.0);
 
     useEffect(() => {
         const state = getState();
@@ -79,13 +82,29 @@ const Edit = ({id}) => {
             setIsPlaying(false);
         });
         wavesurfer.loadBlob(state.podcastFile);
+        wavesurfer.on('audioprocess', (e) => {
+            setCTime(e);
+        });
     }, []);
+
+    useEffect(() => {
+        if (!ws) return;
+        const d = ws.getDuration();
+        if (fadeLeft && cTime < 3) {
+            ws.setVolume(cTime / 3);
+        } else if (fadeRight && cTime > d - 3) {
+            ws.setVolume((d - cTime) / 3);
+        } else {
+            ws.setVolume(1);
+        }
+    }, [cTime]);
 
     const cut = () => {
         const rVal = Object.values(ws.regions.list);
-        if(rVal.length > 0){
+        if(rVal.length > 0) {
             const original_buffer = ws.backend.buffer;
-            const new_buffer      = ws.backend.ac.createBuffer(original_buffer.numberOfChannels, original_buffer.length, original_buffer.sampleRate);
+            const newLength = ws.getDuration() - (rVal[0].end - rVal[0].start);
+            const new_buffer      = ws.backend.ac.createBuffer(original_buffer.numberOfChannels, newLength * original_buffer.sampleRate, original_buffer.sampleRate);
 
             setPrevBuffer(original_buffer);
 
@@ -95,15 +114,16 @@ const Edit = ({id}) => {
 
             const new_list        = new Float32Array( parseInt( first_list_index ));
             const second_list     = new Float32Array( parseInt( second_list_mem_alloc ));
-            const combined        = new Float32Array( original_buffer.length );
+            const combined        = new Float32Array( new_list.length + second_list.length  );
 
             original_buffer.copyFromChannel(new_list, 0);
-            original_buffer.copyFromChannel(second_list, 0, second_list_index)
+            original_buffer.copyFromChannel(second_list, 0, second_list_index);
 
-            combined.set(new_list)
-            combined.set(second_list, first_list_index)
+            combined.set(new_list);
+            combined.set(second_list, first_list_index);
 
             new_buffer.copyToChannel(combined, 0);
+            new_buffer.copyToChannel(combined, 1);
 
             ws.loadDecodedBuffer(new_buffer);
         }
@@ -111,8 +131,25 @@ const Edit = ({id}) => {
 
     const undo = () => {
         if (!prevBuffer) return;
-        ws.loadDecodedBuffer(prevBuffer);
-        setPrevBuffer(null);
+        try {
+            ws.pause();
+            ws.loadDecodedBuffer(prevBuffer);
+            setPrevBuffer(null);
+        } catch (e) {}
+    };
+
+    const playPause = () => {
+        try {
+            ws.playPause();
+        } catch (e){}
+    };
+
+    const fLeft = () => {
+        setFadeLeft(!fadeLeft);
+    };
+
+    const fRight = () => {
+        setFadeRight(!fadeRight);
     };
 
     return (
@@ -129,11 +166,36 @@ const Edit = ({id}) => {
                 <div id="waveform"/>
             </div>
             <div className="btns-container">
-                <Button onClick={() => {ws.playPause()}} className="square-btn" before={
+                <Button onClick={playPause} className="square-btn" before={
                     isPlaying
-                        ? <Icon24Pause style={{marginLeft: 10}}/>
+                        ? <Icon24Pause style={{marginLeft: 12}}/>
                         : <Icon24Play style={{marginLeft: 10}}/>
                 }/>
+                <div style={{display: 'flex'}}>
+                    <Button onClick={() => {cut()}} className="square-btn" before={<div className="scissors"/>} mode="secondary"/>
+                    <Button
+                        onClick={() => {undo()}}
+                        className="square-btn"
+                        before={<Icon24ArrowUturnLeftOutline style={{marginLeft: 10}}/>}
+                        style={{marginLeft: 4, opacity: prevBuffer ? 1.0 : 0.5}}
+                        mode="secondary"
+                    />
+                </div>
+                <div style={{display: 'flex'}}>
+                    <Button
+                        className="square-btn"
+                        before={<div className={`bc-${fadeLeft ? 'white' : 'blue'}-left`}/>}
+                        style={{marginRight: 4}}
+                        mode={fadeLeft ? 'primary' : 'secondary'}
+                        onClick={fLeft}
+                    />
+                    <Button
+                        className="square-btn"
+                        before={<div className={`bc-${fadeRight ? 'white' : 'blue'}-right`}/>}
+                        mode={fadeRight ? 'primary' : 'secondary'}
+                        onClick={fRight}
+                    />
+                </div>
             </div>
         </Panel>
     );
