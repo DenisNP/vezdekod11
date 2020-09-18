@@ -7,6 +7,7 @@ import NewPodcast from "./panels/NewPodcast";
 import Finish from "./panels/Finish";
 import "./App.css";
 import Edit from "./panels/Edit";
+import Show from "./panels/Show";
 
 const App = () => {
 	const [activePanel, setActivePanel] = useState("start");
@@ -36,6 +37,7 @@ const App = () => {
 			<Start id="start" go={changePanel}/>
 			<NewPodcast id="newPodcast" go={changePanel}/>
 			<Edit id="edit"/>
+			<Show id="show" go={changePanel}/>
 			<Finish id="finish" go={changePanel}/>
 		</View>
 	);

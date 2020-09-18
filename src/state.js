@@ -14,6 +14,7 @@ export const getState = (forceClear) => {
             availableTo: 0,
             timecodes: [],
             fileName: '',
+            duration: 0,
         };
 
         state = newState;
@@ -27,7 +28,12 @@ export const setState = (obj) => {
     const s = getState();
     const newState = {...s, ...obj};
     state = newState;
+    state.timecodes.sort(compare);
     return newState;
+};
+
+const compare = (a, b) => {
+    return a.time - b.time;
 };
 
 export const targets = [

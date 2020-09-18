@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
 import {Panel, PanelHeader, PanelHeaderButton, IOS, platform, Button, Group, CellButton, Header} from "@vkontakte/vkui";
-import {getState} from "../state";
+import {getState, setState} from "../state";
 import Icon28ChevronBack from "@vkontakte/icons/dist/28/chevron_back";
 import Icon24Back from "@vkontakte/icons/dist/24/back";
 import WaveSurfer from 'wavesurfer.js';
@@ -15,7 +15,6 @@ const osName = platform();
 
 const Edit = ({id}) => {
     const [ws, setWs] = useState(null);
-    const [nd, setNd] = useState(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [prevBuffer, setPrevBuffer] = useState(null);
     const [fadeLeft, setFadeLeft] = useState(false);
@@ -71,12 +70,7 @@ const Edit = ({id}) => {
             }
         });
         wavesurfer.on('ready', () => {
-            const context = wavesurfer.backend.getAudioContext();
-            const source = context.createBufferSource();
-            const gainNode = context.createGain();
-            source.connect(gainNode);
-            gainNode.connect(context.destination);
-            setNd(gainNode);
+            setState({duration: wavesurfer.getDuration()});
         });
         wavesurfer.on('play', () => {
             setIsPlaying(true);
@@ -129,6 +123,9 @@ const Edit = ({id}) => {
             new_buffer.copyToChannel(combined, 1);
 
             ws.loadDecodedBuffer(new_buffer);
+            setTimeout(() => {
+                setState({duration: ws.getDuration()});
+            }, 2000);
         }
     };
 
@@ -216,7 +213,7 @@ const Edit = ({id}) => {
                 </div>
             </div>
             <Group header={<Header mode="secondary">Таймкоды</Header>}>
-                {timecodes.map((tc, i) => <Timecode timecode={tc} key={i} remove={() => removeTimecode(i)}/>)}
+                {timecodes.map((tc, i) => <Timecode idx={i} key={i} remove={() => removeTimecode(i)}/>)}
                 <CellButton before={<Icon24Add/>} onClick={addTimecode}>Добавить таймкод</CellButton>
             </Group>
         </Panel>

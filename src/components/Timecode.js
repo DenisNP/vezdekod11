@@ -1,13 +1,38 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Input} from "@vkontakte/vkui";
 import {Icon24DismissDark} from "@vkontakte/icons";
 import "./Timecode.css";
+import {getState} from "../state";
 
-const Timecode = ({timecode, remove}) => {
+const Timecode = ({timecodes, idx, remove}) => {
+    const [time, setTime] = useState(0);
+    const [text, setText] = useState("");
+
+    useEffect(() => {
+        const state = getState();
+        const tc = state.timecodes[idx];
+        setTime(tc.time);
+        setText(tc.text);
+    }, []);
+
+    const assignTime = (t) => {
+        setTime(t);
+        const state = getState();
+        const tc = state.timecodes[idx];
+        tc.time = t;
+    };
+
+    const assignText = (t) => {
+        setText(t);
+        const state = getState();
+        const tc = state.timecodes[idx];
+        tc.text = t;
+    };
+
     const getTime = (t) => {
-        const m = Math.floor(t / 60).toString();
+        const m = Math.floor(t / 60);
         const s = Math.floor(t - m * 60).toString();
-        return `${m.padStart(2, "0")}:${s.padStart(2, "0")}`;
+        return `${m.toString().padStart(2, "0")}:${s.padStart(2, "0")}`;
     };
 
     const getSeconds = (s) => {
@@ -23,13 +48,13 @@ const Timecode = ({timecode, remove}) => {
             style={{marginLeft: 12, marginTop: 10}}
         />
         <Input
-            value={timecode.text}
-            onChange={(e) => {timecode.text = e.currentTarget.value}}
+            value={text}
+            onChange={(e) => assignText(e.currentTarget.value)}
         />
         <Input
             type="time"
-            value={getTime(timecode.time)}
-            onChange={(e) => {timecode.time = getSeconds(e.currentTarget.value)}}
+            value={getTime(time)}
+            onChange={(e) => assignTime(getSeconds(e.currentTarget.value))}
         />
     </div>;
 }

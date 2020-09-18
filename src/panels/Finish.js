@@ -8,7 +8,7 @@ const Start = ({id, go}) => {
 
     const goNext = () => {
         getState(true);
-        go("newPodcast");
+        go("start");
     };
 
     return (
@@ -19,7 +19,7 @@ const Start = ({id, go}) => {
                 <Button onClick={goNext}>Поделиться подкастом</Button>
             }>
                 <div style={{display: 'flex', justifyContent: 'center', marginBottom: 10}}>
-                    <Icon56CheckCircleOutline/>
+                    <Icon56CheckCircleOutline style={{color: 'var(--accent)'}}/>
                 </div>
 
                 <Title level="2" weight="semibold" style={{color: 'black', marginBottom: 10}}>Подкаст добавлен</Title>
