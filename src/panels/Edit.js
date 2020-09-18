@@ -101,26 +101,28 @@ const Edit = ({id}) => {
         if(rVal.length > 0) {
             const original_buffer = ws.backend.buffer;
             const newLength = ws.getDuration() - (rVal[0].end - rVal[0].start);
-            const new_buffer      = ws.backend.ac.createBuffer(original_buffer.numberOfChannels, newLength * original_buffer.sampleRate, original_buffer.sampleRate);
+            const new_buffer = ws.backend.ac.createBuffer(original_buffer.numberOfChannels, newLength * original_buffer.sampleRate, original_buffer.sampleRate);
 
             setPrevBuffer(original_buffer);
 
             const first_list_index        = (rVal[0].start * original_buffer.sampleRate);
             const second_list_index       = (rVal[0].end * original_buffer.sampleRate);
-            const second_list_mem_alloc   = (original_buffer.length - (rVal[0].end * original_buffer.sampleRate));
 
-            const new_list        = new Float32Array( parseInt( first_list_index ));
-            const second_list     = new Float32Array( parseInt( second_list_mem_alloc ));
-            const combined        = new Float32Array( new_list.length + second_list.length  );
+            const first_list_l        = original_buffer.getChannelData(0).slice(0, first_list_index);
+            const second_list_l     = original_buffer.getChannelData(0).slice(second_list_index, original_buffer.length);
+            const first_list_r        = original_buffer.getChannelData(1).slice(0, first_list_index);
+            const second_list_r     = original_buffer.getChannelData(1).slice(second_list_index, original_buffer.length);
+            const new_data_l = new_buffer.getChannelData(0);
+            const new_data_r = new_buffer.getChannelData(1);
 
-            original_buffer.copyFromChannel(new_list, 0);
-            original_buffer.copyFromChannel(second_list, 0, second_list_index);
-
-            combined.set(new_list);
-            combined.set(second_list, first_list_index);
-
-            new_buffer.copyToChannel(combined, 0);
-            new_buffer.copyToChannel(combined, 1);
+            for (let i = 0; i < first_list_l.length; i++) {
+                new_data_l[i] = first_list_l[i];
+                new_data_r[i] = first_list_r[i];
+            }
+            for (let k = 0; k < second_list_l.length; k++) {
+                new_data_l[k + first_list_l.length] = second_list_l[k];
+                new_data_r[k + first_list_r.length] = second_list_r[k];
+            }
 
             ws.loadDecodedBuffer(new_buffer);
             setTimeout(() => {

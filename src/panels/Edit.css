@@ -28,15 +28,15 @@
 }
 
 .wavesurfer-handle {
-    width: 2px!important;
+    width: 3px!important;
     min-width: 2px!important;
     max-width: 2px!important;
     background-color: white!important;
     border-top: 30px solid var(--accent)!important;
     border-bottom: 30px solid var(--accent)!important;
     height: calc(100% - 60px)!important;
-    border-left: 2px solid var(--accent)!important;
-    border-right: 2px solid var(--accent)!important;
+    border-left: 4px solid var(--accent)!important;
+    border-right: 4px solid var(--accent)!important;
 }
 
 .square-btn {
