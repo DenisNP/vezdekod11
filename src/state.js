@@ -12,6 +12,8 @@ export const getState = (forceClear) => {
             isExcludedFromExport: false,
             isTrailer: false,
             availableTo: 0,
+            timecodes: [],
+            fileName: '',
         };
 
         state = newState;

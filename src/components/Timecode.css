@@ -1,0 +1,8 @@
+.timecode {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.timecode .FormField {
+    margin-left: 12px;
+}

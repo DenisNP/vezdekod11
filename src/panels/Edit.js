@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
-import {Panel, PanelHeader, PanelHeaderButton, IOS, platform, Button} from "@vkontakte/vkui";
+import {Panel, PanelHeader, PanelHeaderButton, IOS, platform, Button, Group, CellButton, Header} from "@vkontakte/vkui";
 import {getState} from "../state";
 import Icon28ChevronBack from "@vkontakte/icons/dist/28/chevron_back";
 import Icon24Back from "@vkontakte/icons/dist/24/back";
@@ -8,7 +8,8 @@ import WaveSurfer from 'wavesurfer.js';
 import RegionPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import "./Edit.css";
-import {Icon24ArrowUturnLeftOutline, Icon24Pause, Icon24Play} from "@vkontakte/icons";
+import {Icon24Add, Icon24ArrowUturnLeftOutline, Icon24Pause, Icon24Play} from "@vkontakte/icons";
+import Timecode from "../components/Timecode";
 
 const osName = platform();
 
@@ -20,6 +21,7 @@ const Edit = ({id}) => {
     const [fadeLeft, setFadeLeft] = useState(false);
     const [fadeRight, setFadeRight] = useState(false);
     const [cTime, setCTime] = useState(0.0);
+    const [timecodes, setTimecodes] = useState([]);
 
     useEffect(() => {
         const state = getState();
@@ -50,6 +52,7 @@ const Edit = ({id}) => {
         });
 
         setWs(wavesurfer);
+        setTimecodes(state.timecodes);
 
         wavesurfer.on('seek', (r) => {
             const d = wavesurfer.getDuration();
@@ -152,6 +155,21 @@ const Edit = ({id}) => {
         setFadeRight(!fadeRight);
     };
 
+    const addTimecode = () => {
+        const state = getState();
+        state.timecodes.push({
+            text: `Таймкод #${state.timecodes.length - (-1)}`,
+            time: ws.getCurrentTime()
+        });
+        setTimecodes([...state.timecodes]);
+    };
+
+    const removeTimecode = (idx) => {
+        const state = getState();
+        state.timecodes.splice(idx, 1);
+        setTimecodes([...state.timecodes]);
+    };
+
     return (
         <Panel id={id}>
             <PanelHeader
@@ -197,6 +215,10 @@ const Edit = ({id}) => {
                     />
                 </div>
             </div>
+            <Group header={<Header mode="secondary">Таймкоды</Header>}>
+                {timecodes.map((tc, i) => <Timecode timecode={tc} key={i} remove={() => removeTimecode(i)}/>)}
+                <CellButton before={<Icon24Add/>} onClick={addTimecode}>Добавить таймкод</CellButton>
+            </Group>
         </Panel>
     );
 }

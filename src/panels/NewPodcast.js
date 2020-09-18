@@ -49,6 +49,7 @@ const NewPodcast = ({id, go}) => {
         setIsExcludedFromExport(state.isExcludedFromExport);
         setIsTrailer(state.isTrailer);
         setAvailableTo(state.availableTo);
+        setFileName(state.fileName);
     }, []);
 
     const imageFileSelected = (e) => {
@@ -105,6 +106,7 @@ const NewPodcast = ({id, go}) => {
             isExcludedFromExport,
             isTrailer,
             availableTo,
+            fileName,
         });
     };
 
