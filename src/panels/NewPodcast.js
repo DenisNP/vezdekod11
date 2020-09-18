@@ -154,7 +154,7 @@ const NewPodcast = ({id, go}) => {
             <Placeholder className="load-block" action={
                 <label>
                     <Button Component="div" mode="outline" onClick={goNext}>Загрузить файл</Button>
-                    <input onChange={podcastFileSelected} type="file" accept="audio/*" style={{display: "none"}}/>
+                    <input onChange={podcastFileSelected} type="file" style={{display: "none"}}/>
                 </label>
             }>
                 <Title level="2" weight="semibold" style={{color: 'black', marginBottom: 10}}>
