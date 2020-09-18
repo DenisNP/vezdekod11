@@ -7,8 +7,8 @@ import {getState} from "../state";
 const Start = ({id, go}) => {
 
     const goNext = () => {
-        getState(true);
-        go("start");
+        //getState(true);
+        //go("start");
     };
 
     return (

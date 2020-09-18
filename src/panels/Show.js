@@ -10,11 +10,12 @@ import {
     Avatar,
     Separator,
     Div,
-    Group, Link, Title
+    Group, Link, Title, Button
 } from "@vkontakte/vkui";
 import Icon28ChevronBack from "@vkontakte/icons/dist/28/chevron_back";
 import Icon24Back from "@vkontakte/icons/dist/24/back";
 import {getState} from "../state";
+import "./Show.css";
 
 const osName = platform();
 
@@ -68,6 +69,13 @@ const Show = ({id, go}) => {
                     </div>)}
                 </Group>
             </Div>
+            <Button
+                size="xl"
+                onClick={goNext}
+                className="bottom-btn"
+            >
+                Опубликовать
+            </Button>
         </Panel>
     );
 }
